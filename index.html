@@ -1,3 +1,24 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="An eight-sheet pitch for Larry, a cat food mascot: turnaround, sixty expressions, icon system, and two brand territories.">
+<meta name="theme-color" content="#E8EAE4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#131610" media="(prefers-color-scheme: dark)">
+<link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Larry">
+<meta property="og:title" content="Larry - character &amp; identity pitch">
+<meta property="og:description" content="An eight-sheet pitch for Larry, a cat food mascot: turnaround, sixty expressions, icon system, and two brand territories.">
+<meta property="og:url" content="https://ra-him8.github.io/larry/">
+<meta property="og:image" content="https://ra-him8.github.io/larry/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Larry, an orange cartoon cat in a pink bow tie">
+<meta name="twitter:card" content="summary_large_image">
 <title>Larry Model Sheet</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -123,6 +144,11 @@ a{color:inherit}
 .rail-prog{width:1px;flex:none;height:70px;background:var(--rule);position:relative}
 .rail-prog i{position:absolute;inset:0 0 auto 0;background:var(--orange);height:var(--p,0%)}
 
+/* the rail is desktop-only, so phones get the same progress cue along the top */
+.topbar{position:fixed;top:0;left:0;right:0;height:2px;background:var(--rule-soft);z-index:50}
+.topbar i{display:block;height:100%;width:var(--p,0%);background:var(--orange)}
+@media (min-width:1024px){.topbar{display:none}}
+
 /* --------------------------- layout --------------------------- */
 main{padding-left:0}
 @media (min-width:1024px){main{padding-left:var(--rail)}}
@@ -166,7 +192,7 @@ strong{font-weight:500;color:var(--ink)}
     linear-gradient(var(--c),var(--c)) right bottom /1px 15px no-repeat,
     linear-gradient(var(--c),var(--c)) right bottom /15px 1px no-repeat;
 }
-.cap{margin-top:12px;color:var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.cap{margin-top:12px;color:var(--ink-3);display:flex;justify-content:space-between;gap:3px 16px;flex-wrap:wrap}
 
 /* --------------------------- 001 &middot; cover --------------------------- */
 .cover{display:grid;gap:clamp(28px,5vw,56px);align-items:center}
@@ -180,7 +206,7 @@ strong{font-weight:500;color:var(--ink)}
 .kicker b{color:var(--ink);font-weight:500;font-style:italic}
 .filmstrip{background:var(--plate);border-radius:2px;overflow:hidden}
 .filmstrip video{width:100%;height:auto;background:var(--plate)}
-.meta{display:flex;gap:22px;flex-wrap:wrap;color:var(--ink-3);margin-top:clamp(30px,6vh,54px);align-items:center}
+.meta{display:flex;gap:9px 22px;flex-wrap:wrap;color:var(--ink-3);margin-top:clamp(30px,6vh,54px);align-items:center}
 .meta span{display:flex;gap:7px;align-items:center}
 .meta i{width:5px;height:5px;border-radius:50%;background:var(--orange);flex:none;font-style:normal}
 .cue{color:var(--ink-3);display:flex;align-items:center;gap:10px}
@@ -222,7 +248,11 @@ strong{font-weight:500;color:var(--ink)}
 .chip:hover .th{opacity:1}
 .chip[aria-pressed="true"]{background:var(--raise);color:var(--ink)}
 .chip[aria-pressed="true"] .th{opacity:1;transform:scale(1.06)}
-.chip .mono{font-size:.52rem;letter-spacing:.11em}
+.chip .mono{font-size:.6rem;letter-spacing:.05em}
+@media (max-width:420px){
+  .chip{padding:11px 3px 8px}
+  .chip .mono{font-size:.55rem;letter-spacing:.01em}
+}
 
 /* --------------------------- 006 &middot; territories --------------------------- */
 .switch{
@@ -303,6 +333,9 @@ footer{padding:34px var(--gut);color:var(--ink-3);display:flex;justify-content:s
   *,*::before,*::after{animation:none!important;transition:none!important}
 }
 </style>
+</head>
+<body>
+<div class="topbar" aria-hidden="true"><i></i></div>
 
 <div class="rail" aria-hidden="true">
   <div class="rail-mark"></div>
@@ -613,8 +646,7 @@ footer{padding:34px var(--gut);color:var(--ink-3);display:flex;justify-content:s
 
   /* -- rail: current sheet + read progress -- */
   var rn = document.getElementById("railName"),
-      rq = document.getElementById("railNum"),
-      rp = document.getElementById("railProg");
+      rq = document.getElementById("railNum");
 
   if ("IntersectionObserver" in window) {
     var railObs = new IntersectionObserver(function(es){
@@ -634,9 +666,13 @@ footer{padding:34px var(--gut);color:var(--ink-3);display:flex;justify-content:s
     ticking = true;
     requestAnimationFrame(function(){
       var h = document.documentElement.scrollHeight - innerHeight;
-      rp.style.setProperty("--p", (h > 0 ? (scrollY / h) * 100 : 0) + "%");
+      // set on :root so the desktop rail and the mobile top bar both read it
+      document.documentElement.style.setProperty(
+        "--p", (h > 0 ? Math.min(100, (scrollY / h) * 100) : 0) + "%");
       ticking = false;
     });
   }, {passive:true});
 })();
 </script>
+</body>
+</html>
