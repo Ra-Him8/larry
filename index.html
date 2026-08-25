@@ -1,0 +1,642 @@
+<title>Larry Model Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Martian+Mono:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap">
+
+<style>
+/* --------------------------- tokens --------------------------- */
+:root{
+  /* light: cool paper stock, faint green bias pulled from Larry's eyes */
+  --paper:#E8EAE4;
+  --raise:#F2F3EE;
+  --ink:#191D18;
+  --ink-2:#59604F;
+  --ink-3:#8B9285;
+  --rule:#C4CBBC;
+  --rule-soft:#D8DDD2;
+  --orange:#C96A15;
+  --bow:#D1467C;
+  --eye:#6E9A4B;
+  --shadow:0 1px 2px rgba(25,29,24,.05), 0 12px 32px -18px rgba(25,29,24,.35);
+
+  /* baked into the supplied artwork &mdash; must not flip with theme */
+  --plate:#E8EAE4;
+  --sheet:#FFFFFF;
+  --sheet-ink:#20241F;
+
+  /* territory palettes &mdash; brand colours, theme-invariant */
+  --pl-blue:#1F5FC4;
+  --pl-navy:#16305C;
+  --pl-orange:#E07B24;
+  --pl-pink:#E8558E;
+  --pl-bg:#EFF3F8;
+  --pr-olive:#4A5138;
+  --pr-gold:#B08F45;
+  --pr-dark:#1E2118;
+  --pr-bg:#F1EEE3;
+
+  --measure:66ch;
+  --gut:clamp(20px,5vw,56px);
+  --rail:52px;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#131610;
+    --raise:#1C201A;
+    --ink:#E9EBE4;
+    --ink-2:#99A192;
+    --ink-3:#6C7466;
+    --rule:#2E3429;
+    --rule-soft:#242A20;
+    --orange:#EE8B2E;
+    --bow:#EE6A9C;
+    --eye:#95C06F;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 18px 44px -20px rgba(0,0,0,.85);
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#131610;
+  --raise:#1C201A;
+  --ink:#E9EBE4;
+  --ink-2:#99A192;
+  --ink-3:#6C7466;
+  --rule:#2E3429;
+  --rule-soft:#242A20;
+  --orange:#EE8B2E;
+  --bow:#EE6A9C;
+  --eye:#95C06F;
+  --shadow:0 1px 2px rgba(0,0,0,.5), 0 18px 44px -20px rgba(0,0,0,.85);
+}
+
+/* expression frames &mdash; declared once, referenced twice (stage + chip) */
+:root{
+  --m1:url("assets/mood1.png");
+  --m2:url("assets/mood2.png");
+  --m3:url("assets/mood3.png");
+  --m4:url("assets/mood4.png");
+  --m5:url("assets/mood5.png");
+  --m6:url("assets/mood6.png");
+  --m7:url("assets/mood7.png");
+  --m8:url("assets/mood8.png");
+}
+
+/* --------------------------- base --------------------------- */
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:"Newsreader",Georgia,"Times New Roman",serif;
+  font-size:clamp(16px,.55vw + 14.6px,18px);
+  line-height:1.62;
+  font-weight:400;
+  -webkit-font-smoothing:antialiased;
+}
+img,video{max-width:100%;display:block}
+h1,h2,h3{margin:0;font-family:"Bricolage Grotesque","Helvetica Neue",Arial,sans-serif;font-weight:700;line-height:1.02;letter-spacing:-.025em;text-wrap:balance}
+p{margin:0}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--orange);outline-offset:3px;border-radius:2px}
+
+.mono{
+  font-family:"Martian Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  font-size:.6rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;
+  line-height:1.5;
+}
+
+/* --------------------------- drafting rail --------------------------- */
+.rail{
+  position:fixed;inset:0 auto 0 0;width:var(--rail);z-index:40;
+  border-right:1px solid var(--rule-soft);
+  background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(8px);
+  display:none;
+}
+@media (min-width:1024px){.rail{display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:20px 0}}
+.rail-mark{width:13px;height:13px;border:1.5px solid var(--orange);border-radius:50%;flex:none}
+.rail-now{
+  writing-mode:vertical-rl;color:var(--ink-2);
+  display:flex;align-items:center;gap:14px;
+}
+.rail-now b{color:var(--ink);font-weight:600}
+.rail-prog{width:1px;flex:none;height:70px;background:var(--rule);position:relative}
+.rail-prog i{position:absolute;inset:0 0 auto 0;background:var(--orange);height:var(--p,0%)}
+
+/* --------------------------- layout --------------------------- */
+main{padding-left:0}
+@media (min-width:1024px){main{padding-left:var(--rail)}}
+.sheet{
+  min-height:100svh;
+  padding:clamp(64px,10vh,120px) var(--gut);
+  display:flex;flex-direction:column;justify-content:center;
+  border-bottom:1px solid var(--rule-soft);
+  position:relative;
+}
+.wrap{width:100%;max-width:1080px;margin-inline:auto}
+.stack{display:flex;flex-direction:column;gap:clamp(20px,3vh,34px)}
+
+/* sheet header: number + name. The numbers are real &mdash; this is an ordered set of sheets. */
+.tag{display:flex;align-items:baseline;gap:14px;color:var(--ink-3);margin-bottom:clamp(22px,4vh,40px)}
+.tag .n{color:var(--orange)}
+.tag .line{flex:1;height:1px;background:var(--rule);align-self:center}
+
+h2{font-size:clamp(2rem,5.2vw,3.5rem)}
+.lede{font-size:clamp(1.12rem,1.5vw,1.35rem);line-height:1.5;max-width:34ch;color:var(--ink);font-weight:300}
+.body{max-width:var(--measure);color:var(--ink-2)}
+.body + .body{margin-top:.9em}
+em{font-style:italic;color:var(--ink)}
+strong{font-weight:500;color:var(--ink)}
+
+/* printed plate: white stock w/ registration crop marks */
+.plate{
+  position:relative;background:var(--sheet);border:1px solid var(--rule-soft);
+  border-radius:2px;box-shadow:var(--shadow);padding:clamp(14px,2.4vw,26px);
+}
+.plate::after{
+  content:"";position:absolute;inset:-9px;pointer-events:none;
+  --c:var(--rule);
+  background:
+    linear-gradient(var(--c),var(--c)) left  top    /1px 15px no-repeat,
+    linear-gradient(var(--c),var(--c)) left  top    /15px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) right top    /1px 15px no-repeat,
+    linear-gradient(var(--c),var(--c)) right top    /15px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) left  bottom /1px 15px no-repeat,
+    linear-gradient(var(--c),var(--c)) left  bottom /15px 1px no-repeat,
+    linear-gradient(var(--c),var(--c)) right bottom /1px 15px no-repeat,
+    linear-gradient(var(--c),var(--c)) right bottom /15px 1px no-repeat;
+}
+.cap{margin-top:12px;color:var(--ink-3);display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+
+/* --------------------------- 001 &middot; cover --------------------------- */
+.cover{display:grid;gap:clamp(28px,5vw,56px);align-items:center}
+@media (min-width:900px){.cover{grid-template-columns:minmax(0,1fr) minmax(0,1.02fr)}}
+.wordmark{
+  font-size:clamp(4.6rem,15vw,10.5rem);font-weight:800;letter-spacing:-.055em;line-height:.82;
+  margin:.06em 0 .1em;
+}
+.wordmark .dot{color:var(--orange)}
+.kicker{color:var(--ink-2);max-width:33ch;font-size:clamp(1.15rem,1.7vw,1.45rem);line-height:1.45;font-weight:300}
+.kicker b{color:var(--ink);font-weight:500;font-style:italic}
+.filmstrip{background:var(--plate);border-radius:2px;overflow:hidden}
+.filmstrip video{width:100%;height:auto;background:var(--plate)}
+.meta{display:flex;gap:22px;flex-wrap:wrap;color:var(--ink-3);margin-top:clamp(30px,6vh,54px);align-items:center}
+.meta span{display:flex;gap:7px;align-items:center}
+.meta i{width:5px;height:5px;border-radius:50%;background:var(--orange);flex:none;font-style:normal}
+.cue{color:var(--ink-3);display:flex;align-items:center;gap:10px}
+.cue::after{content:"";width:34px;height:1px;background:var(--rule);animation:slide 2.6s ease-in-out infinite}
+@keyframes slide{0%,100%{transform:translateX(0)}50%{transform:translateX(7px)}}
+
+/* --------------------------- 002 &middot; claims --------------------------- */
+.claims{display:grid;gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule-soft);margin-top:clamp(26px,5vh,48px)}
+@media (min-width:760px){.claims{grid-template-columns:repeat(3,1fr)}}
+.claim{background:var(--paper);padding:clamp(20px,2.6vw,30px)}
+.claim h3{font-size:1.16rem;font-weight:700;letter-spacing:-.015em;margin:10px 0 8px}
+.claim p{color:var(--ink-2);font-size:.95rem;line-height:1.55}
+.claim .mono{color:var(--orange)}
+
+/* --------------------------- 004 &middot; expressions --------------------------- */
+.range{display:grid;gap:clamp(24px,3.4vw,44px);align-items:center}
+@media (min-width:860px){.range{grid-template-columns:minmax(0,340px) minmax(0,1fr)}}
+.stage{
+  position:relative;aspect-ratio:300/342;background:var(--raise);
+  border:1px solid var(--rule-soft);border-radius:2px;
+}
+.stage .frame{
+  position:absolute;inset:7%;background-repeat:no-repeat;background-position:center;background-size:contain;
+  opacity:0;transition:opacity .34s ease;
+}
+.stage .frame.on{opacity:1}
+.stage-name{
+  position:absolute;left:0;bottom:0;padding:9px 12px;background:var(--ink);color:var(--paper);
+  border-radius:0 2px 0 0;
+}
+.chips{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--rule-soft);border:1px solid var(--rule-soft)}
+.chip{
+  appearance:none;border:0;margin:0;padding:14px 6px 9px;background:var(--paper);cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:6px;color:var(--ink-3);
+  transition:background .18s ease,color .18s ease;
+}
+.chip .th{width:100%;aspect-ratio:1;background-repeat:no-repeat;background-position:center;background-size:contain;opacity:.62;transition:opacity .18s ease,transform .18s ease}
+.chip:hover{background:var(--raise)}
+.chip:hover .th{opacity:1}
+.chip[aria-pressed="true"]{background:var(--raise);color:var(--ink)}
+.chip[aria-pressed="true"] .th{opacity:1;transform:scale(1.06)}
+.chip .mono{font-size:.52rem;letter-spacing:.11em}
+
+/* --------------------------- 006 &middot; territories --------------------------- */
+.switch{
+  display:inline-flex;align-self:flex-start;gap:1px;background:var(--rule);
+  border:1px solid var(--rule);border-radius:2px;overflow:hidden;
+  margin-bottom:clamp(22px,4vh,38px);
+}
+.switch button{
+  appearance:none;border:0;margin:0;padding:12px 20px;cursor:pointer;
+  background:var(--paper);color:var(--ink-3);transition:background .2s,color .2s;
+}
+.switch button:hover{color:var(--ink)}
+.switch button[aria-pressed="true"]{background:var(--ink);color:var(--paper)}
+
+.terr{display:none;grid-template-columns:1fr;gap:clamp(22px,3vw,38px)}
+.terr.on{display:grid}
+@media (min-width:900px){.terr.on{grid-template-columns:minmax(0,300px) minmax(0,1fr)}}
+.terr-brief h3{font-size:clamp(1.5rem,2.6vw,2.1rem);margin-bottom:12px;color:var(--t-key)}
+.terr-brief p{color:var(--ink-2);font-size:.98rem;line-height:1.58}
+.terr-brief dl{margin:22px 0 0;display:grid;gap:11px}
+.terr-brief dt{color:var(--ink-3);margin-bottom:2px}
+.terr-brief dd{margin:0;font-size:.95rem;color:var(--ink)}
+.swatches{display:flex;gap:6px;margin-top:20px;flex-wrap:wrap}
+.swatch{width:38px;height:38px;border-radius:2px;border:1px solid rgba(0,0,0,.14)}
+.terr-vis{display:grid;gap:12px;grid-template-columns:1fr 1fr;align-content:start}
+.terr-vis .span2{grid-column:1/-1}
+.terr-vis figure{margin:0}
+.terr-vis img{width:100%;height:100%;object-fit:cover;border-radius:2px;border:1px solid var(--rule-soft)}
+.logo-plate{
+  display:flex;align-items:center;justify-content:center;padding:26px;border-radius:2px;
+  background:var(--t-bg);min-height:150px;border:1px solid var(--rule-soft);
+}
+.logo-plate img{width:min(120px,42%);height:auto}
+.bubble{
+  font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:clamp(2.4rem,6vw,3.6rem);
+  letter-spacing:-.02em;color:var(--pl-orange);
+  -webkit-text-stroke:5px var(--pl-navy);paint-order:stroke fill;
+}
+.caveat{
+  margin-top:clamp(22px,3.6vh,34px);padding:16px 18px;border-left:2px solid var(--bow);
+  background:var(--raise);color:var(--ink-2);font-size:.95rem;line-height:1.55;max-width:62ch;
+}
+.caveat b{color:var(--ink);font-weight:500}
+
+/* --------------------------- 007 &middot; in the world --------------------------- */
+.world{display:grid;gap:clamp(18px,2.6vw,30px);grid-template-columns:1fr}
+@media (min-width:720px){.world{grid-template-columns:1fr 1fr}}
+.world video{width:100%;border-radius:2px;background:var(--raise)}
+
+/* --------------------------- 008 &middot; the ask --------------------------- */
+.ask{display:grid;gap:clamp(26px,4vw,48px);align-items:end}
+@media (min-width:820px){.ask{grid-template-columns:minmax(0,1fr) minmax(0,300px)}}
+.next{display:grid;gap:1px;background:var(--rule-soft);border-block:1px solid var(--rule-soft);margin-top:26px}
+.next div{background:var(--paper);padding:15px 2px 15px 0;display:flex;gap:16px;align-items:baseline}
+.next .mono{color:var(--orange);flex:none;min-width:2.6em}
+.next p{color:var(--ink);font-size:1rem}
+.next small{display:block;color:var(--ink-3);font-size:.68rem;font-family:"Martian Mono",monospace;letter-spacing:.06em;line-height:1.65;margin-top:5px}
+.figure-out{filter:drop-shadow(0 18px 26px rgba(25,29,24,.18))}
+
+footer{padding:34px var(--gut);color:var(--ink-3);display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}
+@media (min-width:1024px){footer{padding-left:calc(var(--rail) + var(--gut))}}
+
+/* --------------------------- motion --------------------------- */
+@supports (animation-timeline:view()){
+  @media (prefers-reduced-motion:no-preference){
+    .rise{animation:rise linear both;animation-timeline:view();animation-range:entry 4% cover 30%}
+    @keyframes rise{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+  }
+}
+@media (prefers-reduced-motion:no-preference){
+  .boot{animation:boot .9s cubic-bezier(.2,.7,.3,1) both}
+  .boot-2{animation-delay:.1s}
+  .boot-3{animation-delay:.2s}
+  .boot-4{animation-delay:.32s}
+  @keyframes boot{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+}
+</style>
+
+<div class="rail" aria-hidden="true">
+  <div class="rail-mark"></div>
+  <div class="rail-now mono"><span id="railName">Cover</span><b id="railNum">001</b></div>
+  <div class="rail-prog"><i id="railProg"></i></div>
+</div>
+
+<main>
+
+<!-- ========== 001 ========== -->
+<section class="sheet" id="s1" data-name="Cover" data-num="001">
+  <div class="wrap">
+    <div class="cover">
+      <div>
+        <div class="mono boot" style="color:var(--ink-3)">Character pitch &middot; Cat food &middot; 2026</div>
+        <h1 class="wordmark boot boot-2">Larry<span class="dot">.</span></h1>
+        <p class="kicker boot boot-3">A brand you can <b>draw again</b>. Sixty expressions, one cat, and every one of them is already made.</p>
+        <div class="meta mono boot boot-4">
+          <span><i></i>60+ poses</span>
+          <span><i></i>8 icon lockups</span>
+          <span><i></i>2 territories</span>
+          <span><i></i>3 films</span>
+        </div>
+      </div>
+      <div class="boot boot-3">
+        <div class="plate" style="padding:0;background:var(--plate)">
+          <div class="filmstrip">
+            <video src="assets/mascot.mp4" muted loop playsinline autoplay preload="auto" aria-label="Larry the cat, animated"></video>
+          </div>
+        </div>
+        <div class="cap mono"><span>Fig. 1 &mdash; Larry, 10s loop</span><span>1280&times;720 &middot; 24fps</span></div>
+      </div>
+    </div>
+    <div class="meta"><span class="cue mono">Scroll</span></div>
+  </div>
+</section>
+
+<!-- ========== 002 ========== -->
+<section class="sheet" id="s2" data-name="The case" data-num="002">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">002</span><span>Why a character</span><span class="line"></span></div>
+    <h2 class="rise">Every other bag on that shelf<br>is a photograph of a cat<br>nobody knows.</h2>
+    <p class="body rise">Photography can only ever show a stranger's cat. It cannot wave, it cannot be sad when the bowl is empty, and it cannot walk into a shop on a Saturday morning. A drawn character can do all three &mdash; and it costs nothing to redraw him for the next campaign, the next flavour, the next country.</p>
+    <p class="body rise">Larry already exists in every state a brand needs. That is the whole argument: <em>the expensive part is finished.</em></p>
+
+    <div class="claims rise">
+      <div class="claim">
+        <div class="mono">Recognition</div>
+        <h3>A face reads faster than a name</h3>
+        <p>Shoppers spot the orange cat before they read "Larry". The character becomes the shelf-block, not the logo.</p>
+      </div>
+      <div class="claim">
+        <div class="mono">Range</div>
+        <h3>One asset, endless posts</h3>
+        <p>Hungry, smug, sleepy, surprised. Sixty ready expressions is a social calendar that never needs a photoshoot.</p>
+      </div>
+      <div class="claim">
+        <div class="mono">Reach</div>
+        <h3>He leaves the screen</h3>
+        <p>A drawing becomes a costume, an inflatable, a plush, a sticker. A photograph becomes none of those.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 003 ========== -->
+<section class="sheet" id="s3" data-name="Model sheet" data-num="003">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">003</span><span>Construction</span><span class="line"></span></div>
+    <h2 class="rise">He is built, not found.</h2>
+    <p class="lede rise">Front, three-quarter, side, and a walk cycle. Any illustrator can pick him up tomorrow and stay perfectly on-model.</p>
+    <div class="plate rise" style="margin-top:14px">
+      <img src="assets/turnaround.jpg" alt="Larry turnaround sheet: front, three-quarter and side views, plus a walk cycle and head-only crops" loading="lazy">
+    </div>
+    <div class="cap mono"><span>Sheet 03a &mdash; Turnaround &amp; walk cycle</span><span>On-model reference</span></div>
+    <div class="plate rise" style="margin-top:26px">
+      <img src="assets/moodsheet.jpg" alt="Larry pose sheet labelled Playful, Happy, Curious, Front View, three-quarter View, Side View, Confident and Hungry" loading="lazy">
+    </div>
+    <div class="cap mono"><span>Sheet 03b &mdash; Named poses</span><span>Playful &middot; Happy &middot; Curious &middot; Confident &middot; Hungry</span></div>
+  </div>
+</section>
+
+<!-- ========== 004 ========== -->
+<section class="sheet" id="s4" data-name="Range" data-num="004">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">004</span><span>Expression range</span><span class="line"></span></div>
+    <h2 class="rise">This is the part<br>a logo cannot do.</h2>
+    <div class="range rise" style="margin-top:10px">
+      <div class="stage" id="stage">
+        <div class="frame on" style="background-image:var(--m1)"></div>
+        <div class="frame" style="background-image:var(--m2)"></div>
+        <div class="frame" style="background-image:var(--m3)"></div>
+        <div class="frame" style="background-image:var(--m4)"></div>
+        <div class="frame" style="background-image:var(--m5)"></div>
+        <div class="frame" style="background-image:var(--m6)"></div>
+        <div class="frame" style="background-image:var(--m7)"></div>
+        <div class="frame" style="background-image:var(--m8)"></div>
+        <div class="stage-name mono" id="stageName">Content</div>
+      </div>
+      <div>
+        <p class="body" style="margin-bottom:20px">A logotype has one mood forever. Larry has one for every message you will ever need to send &mdash; a sale, an apology, a new flavour, a Monday. Pick one:</p>
+        <div class="chips" id="chips">
+          <button class="chip" aria-pressed="true"  data-i="0"><span class="th" style="background-image:var(--m1)"></span><span class="mono">Content</span></button>
+          <button class="chip" aria-pressed="false" data-i="1"><span class="th" style="background-image:var(--m2)"></span><span class="mono">Delighted</span></button>
+          <button class="chip" aria-pressed="false" data-i="2"><span class="th" style="background-image:var(--m3)"></span><span class="mono">Curious</span></button>
+          <button class="chip" aria-pressed="false" data-i="3"><span class="th" style="background-image:var(--m4)"></span><span class="mono">Waving</span></button>
+          <button class="chip" aria-pressed="false" data-i="4"><span class="th" style="background-image:var(--m5)"></span><span class="mono">Hungry</span></button>
+          <button class="chip" aria-pressed="false" data-i="5"><span class="th" style="background-image:var(--m6)"></span><span class="mono">Startled</span></button>
+          <button class="chip" aria-pressed="false" data-i="6"><span class="th" style="background-image:var(--m7)"></span><span class="mono">Smug</span></button>
+          <button class="chip" aria-pressed="false" data-i="7"><span class="th" style="background-image:var(--m8)"></span><span class="mono">Sleepy</span></button>
+        </div>
+        <p class="cap mono" style="margin-top:12px"><span>8 of 60 shown</span><span>Library is already drawn</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 005 ========== -->
+<section class="sheet" id="s5" data-name="Icon system" data-num="005">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">005</span><span>Reduction</span><span class="line"></span></div>
+    <h2 class="rise">He still works at 16 pixels.</h2>
+    <p class="lede rise">Full body, head, face, eyes, one colour, favicon. The character survives every size a brand gets shrunk into &mdash; app icon, embossed lid, sticker, stitched label.</p>
+    <div class="plate rise" style="margin-top:14px">
+      <img src="assets/icons.jpg" alt="Larry icon system: full silhouette, head icon, face icon, eyes icon, geometric mark, one-colour black and one-colour white versions" loading="lazy">
+    </div>
+    <div class="cap mono"><span>Sheet 05 &mdash; Reduction ladder</span><span>8 lockups</span></div>
+    <div class="plate rise" style="margin-top:26px;padding:0;overflow:hidden">
+      <img src="assets/pattern.jpg" alt="Seamless repeating pattern of Larry and pink bow ties on a cream ground" loading="lazy" style="width:100%">
+    </div>
+    <div class="cap mono"><span>Sheet 05b &mdash; Seamless repeat</span><span>Inner bag, tissue, gift wrap, tape</span></div>
+  </div>
+</section>
+
+<!-- ========== 006 ========== -->
+<section class="sheet" id="s6" data-name="Territories" data-num="006">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">006</span><span>Two routes &middot; pick one</span><span class="line"></span></div>
+    <h2 class="rise">Same cat.<br>Two different businesses.</h2>
+    <p class="body rise">These are not two colourways. They sell to different people, in different shops, at different prices. Switch between them:</p>
+
+    <div class="switch mono rise" id="switch" role="group" aria-label="Brand territory">
+      <button aria-pressed="true"  data-t="playful">A &middot; Playful</button>
+      <button aria-pressed="false" data-t="premium">B &middot; Premium</button>
+    </div>
+
+    <!-- Territory A -->
+    <div class="terr on" id="t-playful" style="--t-key:var(--pl-blue);--t-bg:var(--pl-bg)">
+      <div class="terr-brief">
+        <h3>Loud, and proud of it.</h3>
+        <p>Larry is the hero &mdash; full body, front and centre, big enough to read from three metres down a supermarket aisle. Bright blue and orange do the shouting. This route wins impulse buys and moves fast on social.</p>
+        <dl>
+          <dt class="mono">Sells where</dt><dd>Supermarket, hypermarket, e-commerce</dd>
+          <dt class="mono">Sells to</dt><dd>Families, first-time cat owners, gifting to kids</dd>
+          <dt class="mono">Wordmark</dt><dd>Rounded, outlined, bubble-weight</dd>
+          <dt class="mono">Risk</dt><dd>Reads cheap next to imported premium brands</dd>
+        </dl>
+        <div class="swatches">
+          <span class="swatch" style="background:var(--pl-navy)" title="#16305C"></span>
+          <span class="swatch" style="background:var(--pl-blue)" title="#1F5FC4"></span>
+          <span class="swatch" style="background:var(--pl-orange)" title="#E07B24"></span>
+          <span class="swatch" style="background:var(--pl-pink)" title="#E8558E"></span>
+          <span class="swatch" style="background:var(--pl-bg)" title="#EFF3F8"></span>
+        </div>
+      </div>
+      <div class="terr-vis">
+        <div class="logo-plate span2"><span class="bubble">LARRY</span></div>
+        <figure><img src="assets/p-pack1.jpg" alt="Navy Larry cat food bag, Daily Adult Formula, on a kitchen counter" loading="lazy"></figure>
+        <figure><img src="assets/p-pack2.jpg" alt="White Larry pouch, Premium Chicken and Salmon Formula" loading="lazy"></figure>
+        <figure class="span2"><img src="assets/p-social.jpg" alt="Instagram grid of bright Larry posts including a zoomies poll and a fifteen percent off offer" loading="lazy"></figure>
+        <figure class="span2"><img src="assets/p-social2.jpg" alt="Further Larry social posts: product announcement, playful post, educational post and a quiz story" loading="lazy"></figure>
+      </div>
+    </div>
+
+    <!-- Territory B -->
+    <div class="terr" id="t-premium" style="--t-key:var(--pr-olive);--t-bg:var(--pr-bg)">
+      <div class="terr-brief">
+        <h3>Quiet, and expensive.</h3>
+        <p>The monogram leads and Larry steps back to become a small signature in the corner. Olive, gold and deep black. This route lives on a counter rather than a shelf, and it earns its margin from restraint.</p>
+        <dl>
+          <dt class="mono">Sells where</dt><dd>Vet clinics, boutique pet shops, subscription boxes</dd>
+          <dt class="mono">Sells to</dt><dd>Single owners who over-spend on one cat</dd>
+          <dt class="mono">Wordmark</dt><dd>Serif LR monogram, wide-tracked caps</dd>
+          <dt class="mono">Risk</dt><dd>The cartoon cat fights the serif &mdash; see the note below</dd>
+        </dl>
+        <div class="swatches">
+          <span class="swatch" style="background:var(--pr-dark)" title="#1E2118"></span>
+          <span class="swatch" style="background:var(--pr-olive)" title="#4A5138"></span>
+          <span class="swatch" style="background:var(--pr-gold)" title="#B08F45"></span>
+          <span class="swatch" style="background:#D9C79A" title="#D9C79A"></span>
+          <span class="swatch" style="background:var(--pr-bg)" title="#F1EEE3"></span>
+        </div>
+      </div>
+      <div class="terr-vis">
+        <div class="logo-plate span2"><img src="assets/monogram.png" alt="LARRY serif monogram: an interlocking L and R inside a circle, with the name set in wide gold capitals" loading="lazy"></div>
+        <figure><img src="assets/l-pack1.jpg" alt="Black and gold Larry pouch, Complete and Balanced Nutrition" loading="lazy"></figure>
+        <figure><img src="assets/l-pack2.jpg" alt="White and teal Larry pouch, Gourmet Chicken Formula, on marble" loading="lazy"></figure>
+        <figure class="span2"><img src="assets/l-social.jpg" alt="Olive and gold Larry social set: gourmet fare announcement, Curiously Good post and a shop-now story" loading="lazy"></figure>
+        <figure class="span2"><img src="assets/l-social2.jpg" alt="Further premium Larry posts: Royal Salmon Pate announcement, pet parent tips and a subscribe and save offer" loading="lazy"></figure>
+      </div>
+    </div>
+
+    <div class="caveat rise">
+      <b>One honest note before you choose.</b> The premium route is not finished. Its serif monogram and gold palette were built for a refined line drawing, and the current Larry is a bold cartoon &mdash; put them together and they argue. If Route B is the direction, Larry needs redrawing in a thinner, calmer line first. Route A works today, exactly as the artwork stands.
+    </div>
+  </div>
+</section>
+
+<!-- ========== 007 ========== -->
+<section class="sheet" id="s7" data-name="Off screen" data-num="007">
+  <div class="wrap stack">
+    <div class="tag mono"><span class="n">007</span><span>Off the screen</span><span class="line"></span></div>
+    <h2 class="rise">And then he walks<br>into the mall.</h2>
+    <p class="lede rise">Nobody stops to photograph a logo. They stop for a six-metre cat &mdash; and then they post it, tag it, and hand you the reach for free.</p>
+    <div class="world rise" style="margin-top:12px">
+      <div>
+        <div class="plate" style="padding:8px"><video src="assets/costume.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Larry walk-around costume in a shopping mall"></video></div>
+        <div class="cap mono"><span>Fig. 7a &mdash; Walk-around costume</span><span>Store openings &middot; meet &amp; greet</span></div>
+      </div>
+      <div>
+        <div class="plate" style="padding:8px"><video src="assets/inflatable.mp4" muted loop playsinline autoplay preload="metadata" aria-label="Giant inflatable Larry standing in a shopping mall atrium"></video></div>
+        <div class="cap mono"><span>Fig. 7b &mdash; Inflatable</span><span>Mall atrium &middot; expo stand</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 008 ========== -->
+<section class="sheet" id="s8" data-name="The ask" data-num="008">
+  <div class="wrap">
+    <div class="tag mono"><span class="n">008</span><span>Next</span><span class="line"></span></div>
+    <div class="ask">
+      <div>
+        <h2 class="rise">Choose a route.<br>The rest is already drawn.</h2>
+        <div class="next rise">
+          <div><span class="mono">01</span><p>Lock the territory<small>Route A ships as-is &middot; Route B needs Larry redrawn</small></p></div>
+          <div><span class="mono">02</span><p>Clean the packaging copy<small>Several mockups still carry placeholder text</small></p></div>
+          <div><span class="mono">03</span><p>Cut the range to a working set<small>12 core expressions, exported flat and layered</small></p></div>
+          <div><span class="mono">04</span><p>Build the mascot spec<small>Costume and inflatable, from the sheets in 003</small></p></div>
+        </div>
+      </div>
+      <img class="figure-out rise" src="assets/larry-figure.png" alt="Larry sitting, front view, wearing his pink bow tie" loading="lazy">
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="mono">
+  <span>Larry &mdash; character &amp; identity pitch</span>
+  <span>Model sheets 001&ndash;008</span>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* videos: honour reduced motion */
+  if (still) {
+    document.querySelectorAll("video").forEach(function(v){ v.removeAttribute("autoplay"); v.pause(); });
+  }
+
+  /* -- 004 expression stage -- */
+  var frames = document.querySelectorAll("#stage .frame");
+  var chips  = Array.prototype.slice.call(document.querySelectorAll("#chips .chip"));
+  var label  = document.getElementById("stageName");
+  var timer  = null;
+
+  function show(i){
+    frames.forEach(function(f,n){ f.classList.toggle("on", n === i); });
+    chips.forEach(function(c,n){ c.setAttribute("aria-pressed", n === i ? "true" : "false"); });
+    label.textContent = chips[i].querySelector(".mono").textContent;
+  }
+  chips.forEach(function(c){
+    c.addEventListener("click", function(){ stop(); show(+c.dataset.i); });
+    c.addEventListener("mouseenter", function(){ stop(); show(+c.dataset.i); });
+  });
+  function stop(){ if (timer) { clearInterval(timer); timer = null; } }
+
+  /* auto-cycle once, only while the section is on screen and untouched */
+  if (!still && "IntersectionObserver" in window) {
+    var i = 0, seen = false;
+    new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting && !seen && !timer) {
+          timer = setInterval(function(){
+            i = (i + 1) % frames.length;
+            show(i);
+            if (i === frames.length - 1) { seen = true; stop(); }
+          }, 900);
+        }
+      });
+    }, {threshold:.45}).observe(document.getElementById("stage"));
+  }
+
+  /* -- 006 territory switch -- */
+  var sw = document.getElementById("switch");
+  sw.addEventListener("click", function(e){
+    var b = e.target.closest("button");
+    if (!b) return;
+    sw.querySelectorAll("button").forEach(function(x){
+      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+    });
+    document.getElementById("t-playful").classList.toggle("on", b.dataset.t === "playful");
+    document.getElementById("t-premium").classList.toggle("on", b.dataset.t === "premium");
+  });
+
+  /* -- rail: current sheet + read progress -- */
+  var rn = document.getElementById("railName"),
+      rq = document.getElementById("railNum"),
+      rp = document.getElementById("railProg");
+
+  if ("IntersectionObserver" in window) {
+    var railObs = new IntersectionObserver(function(es){
+      es.forEach(function(e){
+        if (e.isIntersecting) {
+          rn.textContent = e.target.dataset.name;
+          rq.textContent = e.target.dataset.num;
+        }
+      });
+    }, {rootMargin:"-45% 0px -45% 0px"});
+    document.querySelectorAll(".sheet").forEach(function(s){ railObs.observe(s); });
+  }
+
+  var ticking = false;
+  addEventListener("scroll", function(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      var h = document.documentElement.scrollHeight - innerHeight;
+      rp.style.setProperty("--p", (h > 0 ? (scrollY / h) * 100 : 0) + "%");
+      ticking = false;
+    });
+  }, {passive:true});
+})();
+</script>
